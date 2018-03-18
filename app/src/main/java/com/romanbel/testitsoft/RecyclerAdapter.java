@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public int getItemCount() {
         return mList.size();
+    }
+
+    public  void setFilter(List <Сontact> newList){
+
+        mList = new ArrayList<>();
+        mList.addAll(newList);
+        notifyDataSetChanged();
     }
 
 

@@ -5,20 +5,27 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.SearchView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerAdapter mRecyclerAdapter;
+    private List<Сontact> сontactList;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List <Сontact> list = setDataList();
-        setUpRecyclerView(list);
+        searchView = findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(this);
+
+        сontactList = setDataList();
+        setUpRecyclerView(сontactList);
     }
 
     private void setUpRecyclerView(List<Сontact> сontacts){
@@ -27,6 +34,26 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mRecyclerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+    }
+
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        newText = newText.toLowerCase();
+        List<Сontact> newList = new ArrayList<>();
+        for(Сontact contact: сontactList){
+            String name = contact.getName().toLowerCase();
+            if (name.contains(newText)){
+                newList.add(contact);
+            }
+        }
+        mRecyclerAdapter.setFilter(newList);
+        return true;
     }
 
     private List<Сontact> setDataList(){
