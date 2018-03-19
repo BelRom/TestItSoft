@@ -10,9 +10,11 @@ import android.widget.SearchView;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
+
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-    private RecyclerView mRecyclerView;
+    private IndexFastScrollRecyclerView mRecyclerView;
     private RecyclerAdapter mRecyclerAdapter;
     private List<Сontact> сontactList;
     private SearchView searchView;
@@ -24,16 +26,29 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         searchView = findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
 
-        сontactList = setDataList();
+        сontactList = DataHelper.setDataList();
         setUpRecyclerView(сontactList);
     }
 
     private void setUpRecyclerView(List<Сontact> сontacts){
         mRecyclerAdapter = new RecyclerAdapter(сontacts);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView = (IndexFastScrollRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mRecyclerAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        mRecyclerView.setIndexTextSize(12);
+        mRecyclerView.setIndexBarColor("#33334c");
+        mRecyclerView.setIndexBarCornerRadius(0);
+        mRecyclerView.setIndexBarTransparentValue((float) 0.4);
+        mRecyclerView.setIndexbarMargin(0);
+        mRecyclerView.setIndexbarWidth(40);
+        mRecyclerView.setPreviewPadding(0);
+        mRecyclerView.setIndexBarTextColor("#FFFFFF");
+
+        mRecyclerView.setIndexBarVisibility(true);
+        mRecyclerView.setIndexbarHighLateTextColor("#33334c");
+        mRecyclerView.setIndexBarHighLateTextVisibility(true);
     }
 
 
@@ -54,21 +69,5 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         mRecyclerAdapter.setFilter(newList);
         return true;
-    }
-
-    private List<Сontact> setDataList(){
-        List <Сontact> list = new ArrayList<>();
-        list.add(new Сontact("Антонов Антон ОченьДлинноеОтчиствоНуОченьДлинное","Какой то текст"));
-        list.add(new Сontact("Белянин Роман Сергеевич","Какой то текст"));
-        list.add(new Сontact("Василенко Антон Петрович","Какой то текст"));
-        list.add(new Сontact("Грызлов Игорь Николаевич","Какой то текст"));
-        list.add(new Сontact("Дмитриев Василий Андреевич","Какой то текст"));
-        list.add(new Сontact("Еремеева Анна Петровна","Какой то текст"));
-        list.add(new Сontact("Жевалова Инна Алексеевна","Какой то текст"));
-        list.add(new Сontact("Знаменко Петр Андреевич","Какой то текст"));
-        list.add(new Сontact("Иванов Иван Иванович","Какой то текст"));
-        list.add(new Сontact("Круптман Екатерина Дмитриевна","Какой то текст"));
-        list.add(new Сontact("Ломоносов Михаил Васильевич","Какой то текст"));
-        return list;
     }
 }

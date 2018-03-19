@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -17,8 +18,9 @@ import java.util.List;
  * Created by roman on 17.03.18.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>  implements SectionIndexer {
     private List<Сontact> mList;
+    private ArrayList<Integer> mSectionPositions;
 
 
     public RecyclerAdapter(List<Сontact> list) {
@@ -56,6 +58,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         mList = new ArrayList<>();
         mList.addAll(newList);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Object[] getSections() {
+        List<String> sections = new ArrayList<>(26);
+        mSectionPositions = new ArrayList<>(26);
+        for (int i = 0, size = mList.size(); i < size; i++) {
+            String section = String.valueOf(mList.get(i).getName().charAt(0)).toUpperCase();
+            if (!sections.contains(section)) {
+                sections.add(section);
+                mSectionPositions.add(i);
+            }
+        }
+        return sections.toArray(new String[0]);
+    }
+
+    @Override
+    public int getPositionForSection(int sectionIndex) {
+        return mSectionPositions.get(sectionIndex);
+    }
+
+    @Override
+    public int getSectionForPosition(int i) {
+        return 0;
     }
 
 
